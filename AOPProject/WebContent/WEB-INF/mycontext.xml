@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="alwaysUseFullPath" value="true" />
+		<property name="mappings">
+			<props>
+				<prop key="/test">testController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- AOP를 이용하기 위해서는, 공통로직(Bell)인 횡단적 관심사항을 등록 -->
+	<bean id="bell" class="test.Bell"/>
+	
+	<!-- 어떤 시점에 어떤 객체에게 횡단적 관심사항을 적용할시 xml 태그로 서술(선언적 방법[xml,json 등의 설정파일 이용]) -->
+	<aop:config>
+		<aop:aspect id="bellAspect" ref="bell">
+			<!-- 어떤녀석에게 관여할지?(위치) -->
+			<!-- public 에 반환형은 상관없는 test패키지의 Student 클래스의 함수명은 상관없고 매개변수가 있던없던 상관없는 -->
+			<aop:pointcut expression="execution(public * test.Dog.*(..))" id="bellpointcut"/>
+			<!-- 어떤시점에 적용할지?(시점) -->
+			<aop:before method="startBell" pointcut-ref="bellpointcut"/>
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="student" class="test.Student"/>
+	<bean id="dog" class="test.Dog"/>
+
+	<bean id="testController" class="test.TestController">
+		<property name="student" ref="student"/>
+		<property name="dog" ref="dog"></property>
+	</bean>
+	
+</beans>
