@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dept">
+
+	<!-- 쿼리 결과와 객체간 매핑을 자동으로 하는것이 아닌 개발자가 주도하여 처리하고자 할때는 별도의 매핑을 선언 -->
+	<resultMap id="deptJoinEmp" type="Dept">
+		<id 				column="deptno" 	property="deptno" /> <!-- 기본키 -->
+		<result 		column="dname" 	property="dname" /> <!-- 그 외 컬럼 -->
+		<result 		column="loc" 		property="loc" />
+		<collection 	column="deptno" 	property="empList" javaType="java.util.List" ofType="Emp" select="Emp.select">
+		
+		</collection>
+		
+	</resultMap>
+
+	<select id="selectAll" resultMap="deptJoinEmp">
+		select deptno, dname, loc from dept
+	</select>
+	
+	<!-- 한건 가져오기 -->
+	<select id="selectById" parameterType="int" resultType="Dept">
+		select * from dept where deptno=#{deptno}
+	</select>
+
+</mapper>

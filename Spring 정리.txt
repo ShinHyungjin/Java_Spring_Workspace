@@ -1,0 +1,94 @@
+Eclipse Spring 연동
+- 사전 작업
+  - 연동할 DB 생성 및 테이블 생성
+  - 
+
+1. Dynamick 프로젝트 -> Maven 변환
+
+2. pom.xml에 maven 등록 (Springmvc, oracle 또는 mysql 또는 mariadb, Mybatis)
+
+3. dispatcher-servlet.xml 생성 (WEB-INF 바로 아래)
+ 3.1. DI 버전의 코멘트 게시판
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+	<!-- Namespaces 에서 'p'를 체크하면 p: 테크 이용 가능 -->
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="alwaysUseFullPath" value="true" />
+		<property name="mappings">
+			<props>
+				<prop key="/board/list">listController</prop>
+				<prop key="/board/delete">deleteController</prop>
+				<prop key="/board/regist">registController</prop>
+				<prop key="/board/edit">editController</prop>
+				<prop key="/board/detail">detailController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- MybatisConfigManager 등록 -->
+	<bean id="mybatisConfigManager" class="com.model2.mybatis.config.MybatisConfigManager"
+	  factory-method="getInstance"/>
+	
+	<!-- DAO 등록 -->
+	<bean id="boardDAO" class="com.model2.model.BoardDAO">
+		<property name="manager" ref="mybatisConfigManager"/>
+	</bean>
+	
+	<!-- 컨트롤러 등록 및 DAO엮기(Weaving) -->
+	<!-- setter 등록시 자동으로 변수로 들어감 -->
+	<bean id="listController" class="com.springmvc.board.controller.ListController" p:boardDAO-ref="boardDAO"/>
+	<bean id="registController" class="com.springmvc.board.controller.RegistController" p:boardDAO-ref="boardDAO"/>
+	<bean id="detailController" class="com.springmvc.board.controller.DetailController" p:boardDAO-ref="boardDAO"/>
+	<bean id="deleteController" class="com.springmvc.board.controller.DeleteController" p:boardDAO-ref="boardDAO"/>
+	<bean id="editController" class="com.springmvc.board.controller.EditController" p:boardDAO-ref="boardDAO"/>
+	
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/" p:suffix=".jsp"/>
+
+</beans>
+
+ 3.2. AOP 버전
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="alwaysUseFullPath" value="true" />
+		<property name="mappings">
+			<props>
+				<prop key="/test">testController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- AOP를 이용하기 위해서는, 공통로직(Bell)인 횡단적 관심사항을 등록 -->
+	<bean id="bell" class="test.Bell"/>
+	
+	<!-- 어떤 시점에 어떤 객체에게 횡단적 관심사항을 적용할시 xml 태그로 서술(선언적 방법[xml,json 등의 설정파일 이용]) -->
+	<aop:config>
+		<aop:aspect id="bellAspect" ref="bell">
+			<!-- 어떤녀석에게 관여할지?(위치) -->
+			<!-- public 에 반환형은 상관없는 test패키지의 Student 클래스의 함수명은 상관없고 매개변수가 있던없던 상관없는 -->
+			<aop:pointcut expression="execution(public * test.Dog.*(..))" id="bellpointcut"/>
+			<!-- 어떤시점에 적용할지?(시점) -->
+			<aop:before method="startBell" pointcut-ref="bellpointcut"/>
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="student" class="test.Student"/>
+	<bean id="dog" class="test.Dog"/>
+
+	<bean id="testController" class="test.TestController">
+		<property name="student" ref="student"/>
+		<property name="dog" ref="dog"></property>
+	</bean>
+	
+</beans>

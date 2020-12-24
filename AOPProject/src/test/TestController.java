@@ -29,6 +29,6 @@ public class TestController implements Controller{
 		dog.haveFood2();
 		dog.haveFood3();
 		
-		return null;
+		return mav;
 	}
 }
