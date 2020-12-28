@@ -1,0 +1,13 @@
+Spring Legacy 프로젝트
+
+1. New File -> Spring Legacy (Spring MVC Project)
+
+2. pom.xml에서의 jar 버전 수정
+  2.1 java-version = 1.8
+  2.2 springframwork = 4.3.30
+  2.3 aspectj = 1.8.14
+  2.4 slf4j = 1.7.30
+  2.5 mybatis 추가 
+  2.6 db 추가
+
+3. 
