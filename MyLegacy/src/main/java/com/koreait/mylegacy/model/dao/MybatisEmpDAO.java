@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.koreait.mylegacy.exception.RegistException;
 import com.koreait.mylegacy.model.domain.Emp;
 
 
@@ -20,9 +21,13 @@ public class MybatisEmpDAO {
 		list = sqlSession.selectList("Emp.selectAll");
 		return list;
 	}
-	public int insert(Emp emp) {
+	public int insert(Emp emp) throws RegistException{
 		int result = 0;
 		result = sqlSession.insert("Emp.insert", emp);
+		result = 0;
+		if(result == 0) {
+			throw new RegistException("사원등록 실패");
+		}
 		return result;
 	}
 }

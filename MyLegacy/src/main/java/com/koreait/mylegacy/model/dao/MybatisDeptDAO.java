@@ -5,12 +5,13 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.koreait.mylegacy.exception.RegistException;
 import com.koreait.mylegacy.model.domain.Dept;
 import com.koreait.mylegacy.model.domain.Emp;
 
 
 @Repository
-public class MybatisDeptDAO {
+public class MybatisDeptDAO{
 	private SqlSession sqlSession = null;
 	
 	public void setSqlSession(SqlSession sqlSession) {
@@ -21,9 +22,13 @@ public class MybatisDeptDAO {
 		list = sqlSession.selectList("Dept.selectAll");
 		return list;
 	}
-	public int insert(Dept dept) {
+	public int insert(Dept dept) throws RegistException{
 		int result = 0;
 		result = sqlSession.insert("Dept.insert", dept);
+		result = 0;
+		if(result == 0) {
+			throw new RegistException("부서등록 실패");
+		}
 		return result;
 	}
 }

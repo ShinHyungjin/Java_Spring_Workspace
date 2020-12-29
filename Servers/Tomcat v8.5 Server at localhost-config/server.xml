@@ -108,7 +108,7 @@
 				<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
 				
-			<Context docBase="SpringFinal" path="/SpringFinal" reloadable="true" source="org.eclipse.jst.jee.server:SpringFinal"/><Context docBase="MyLegacy" path="/" reloadable="true" source="org.eclipse.jst.jee.server:MyLegacy"/></Host>
+			<Context docBase="MVCLegacy" path="/" reloadable="true" source="org.eclipse.jst.jee.server:MVCLegacy"/></Host>
 		</Engine>
 	</Service>
 </Server>
