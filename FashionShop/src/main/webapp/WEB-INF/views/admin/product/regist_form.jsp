@@ -1,4 +1,10 @@
+<%@page import="com.koreait.fashionshop.model.domain.TopCategory"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=utf-8"%>
+<%
+	List <TopCategory> topList = (List)request.getAttribute("topList");
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,13 +44,41 @@ input[type=button]:hover {
 <script>
 $(function() {
     CKEDITOR.replace( 'detail' );
+    
+    //상위 카테고리 선택시 하위 카테고리 비동기로 얻어오기
+    $($("select")[0]).change(function() {
+    	getSubList(this);
+	});
 });
 
+//비동기 방식으로 하위카테고리 요청
+function getSubList(obj) {
+	 $.ajax({
+		 url: "/admin/product/sublist", 
+		 type:"get",
+		 data:{
+			 topcategory_id:$(obj).val()
+		 }, 
+		 success:function(result) {
+			 $($("select")[1]).empty();
+			 $($("select")[1]).append("<option>하위 카테고리 선택</option>");
+			//alert(result);
+			//서버가 이미 Json으로 보내주어서 parsing이 필요없다
+			for(var i=0; i<result.length; i++) {
+				var subCategory = result[i];
+				$($("select")[1]).append("<option value=\""+subCategory.subcategory_id+"\">"+subCategory.name+"</option>");
+			}
+		 }
+		});
+}
+
 function regist() {
-	var form = document.querySelector("form");
-	form.action="/client/notice/regist";
-	form.method="post";
-	form.submit();
+	$("form").attr({
+		action:"/admin/product/regist",
+		method:"post",
+		enctype:"multipart/form-data"
+	});
+	$("form").submit();
 }
 
 </script>
@@ -57,9 +91,12 @@ function regist() {
   <form>
   <select>
   	<option>상위 카테고리 선택</option>
+  	<%for(TopCategory topCategory : topList) {%>
+	  	<option value="<%=topCategory.getTopcategory_id()%>"><%=topCategory.getName() %></option>
+	  	<%} %>
   </select>
   
-  <select>
+  <select name="subcategory_id">
   	<option>하위 카테고리 선택</option>
   </select>
   
@@ -67,20 +104,20 @@ function regist() {
     <input type="text" name="price" placeholder="가격">
     <input type="text" name="brand" placeholder="브랜드">
     
-    <p>대표이미지<input type ="file" ></p>
+    <p>대표이미지<input type ="file" name="repImg"></p>
     
-    <p>추가이미지<input type ="file" ></p>
-    <p>추가이미지<input type ="file" ></p>
-    <p>추가이미지<input type ="file" ></p>
-    <p>추가이미지<input type ="file" ></p>
+    <p>추가이미지<input type ="file" name="addImg"></p>
+    <p>추가이미지<input type ="file" name="addImg"></p>
+    <p>추가이미지<input type ="file" name="addImg"></p>
+    <p>추가이미지<input type ="file" name="addImg"></p>
 
 	<p>
-		XS <input type="checkbox">
-		S <input type="checkbox">
-		M <input type="checkbox">
-		L <input type="checkbox">
-		XL <input type="checkbox">
-		XXL <input type="checkbox">
+		XS <input type="checkbox" name="fit" value="XS">
+		S <input type="checkbox" name="fit" value="S">
+		M <input type="checkbox" name="fit" value="M">
+		L <input type="checkbox" name="fit" value="L">
+		XL <input type="checkbox" name="fit" value="XL">
+		XXL <input type="checkbox" name="fit" value="XXL">
 	</p>
     
     <p>
