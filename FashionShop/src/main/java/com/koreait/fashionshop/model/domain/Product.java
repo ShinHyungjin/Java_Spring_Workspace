@@ -17,8 +17,9 @@ public class Product {
 	//이미지 하나를 자동으로 처리하는 객체 선언 단 이름은 html의 컴포넌트 파라미터명과 일치시켜야함
 	private MultipartFile repImg; // 대표이미지
 	private MultipartFile [] addImg; // 추가이미지
-	String [] color;
-	String [] fit;
+	
+	private Color [] color;
+	private Psize [] psize;
 	
 	
 }

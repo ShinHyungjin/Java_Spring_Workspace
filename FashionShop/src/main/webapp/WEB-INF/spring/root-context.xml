@@ -34,12 +34,9 @@
 	 	<constructor-arg ref="sqlSessionFactoryBean"/>
 	 </bean>
 	 
-	 <!-- 파일매니저 등록 -->
-	 <bean id="fileManager" class="com.koreait.fashionshop.common.FileManager"> 
-	 	<property name="saveDir" value="D:/IT_Korea_Class/Spring/FashionShop/src/main/webapp/resources/data"></property>
-	 </bean>
-	 
 	 <!-- 모델 영역은 모든 서블릿에서 공용으로 사용되기 때문에 앱 가동시 부터 메모리에 올라와야 함 -->
-	 <context:component-scan base-package="com.koreait.fashionshop.model"/>
+	 <context:component-scan base-package="com.koreait.fashionshop">
+	 	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	 </context:component-scan>
 	
 </beans>
