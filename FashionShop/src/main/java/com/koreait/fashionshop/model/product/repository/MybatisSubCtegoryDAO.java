@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.koreait.fashionshop.exception.ProductRegistException;
 import com.koreait.fashionshop.model.domain.SubCategory;
 
 @Repository
@@ -29,15 +30,16 @@ public class MybatisSubCtegoryDAO implements SubCategoryDAO{
 	}
 
 	@Override
-	public void insert(SubCategory subcategory) {
+	public void insert(SubCategory subcategory) throws ProductRegistException{
+		
 	}
 
 	@Override
-	public void update(SubCategory subcategory) {
+	public void update(SubCategory subcategory) throws ProductRegistException{
 	}
 
 	@Override
-	public void delete(int subcategory_id) {
+	public void delete(int subcategory_id) throws ProductRegistException{
 	}
 	
 }
