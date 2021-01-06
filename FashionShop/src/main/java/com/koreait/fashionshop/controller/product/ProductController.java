@@ -1,4 +1,4 @@
-package com.koreait.fashionshop.controller.admin;
+package com.koreait.fashionshop.controller.product;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class ProductController implements ServletContextAware{
 		
 	}
 	
-	//상위카테고리 가져오기 
+	//상위카테고리 가져오기 (관리자용)
 	@RequestMapping(value="/admin/product/registform", method=RequestMethod.GET)
 	public ModelAndView getTopList() {
 		//3단계: 로직 객체에 일시킨다
@@ -117,7 +117,6 @@ public class ProductController implements ServletContextAware{
 		ModelAndView mav = new ModelAndView("admin/product/product_list");
 		List productList = productService.selectAll();
 		mav.addObject("productList", productList);
-
 		return mav;
 	}
 	
@@ -177,4 +176,35 @@ public class ProductController implements ServletContextAware{
 		return sb.toString();
 	}
 	
+	
+	
+	/* *********************************************************************** 
+	  쇼핑몰 프론트 요청 처리 
+	 ************************************************************************/
+	//상품목록 요청 처리
+	@RequestMapping(value="/shop/product/list", method=RequestMethod.GET)
+	public ModelAndView getShopProductList(int subcategory_id) {//하위카테고리의 id
+		List topList = topCategoryService.selectAll();//상품카테고리 목록
+		List productList = productService.selectById(subcategory_id);//상품목록
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("topList", topList);
+		mav.addObject("productList", productList);
+		
+		mav.setViewName("shop/product/list");
+		return mav;
+	}
+		
+	//상품상세 보기 요청 
+	@RequestMapping(value="/shop/product/detail", method=RequestMethod.GET)
+	public ModelAndView getShopProductDetail(int product_id) {
+		List topList = topCategoryService.selectAll();//상품카테고리 목록
+		Product product = productService.select(product_id);//상품 1건 가져오기
+		
+		ModelAndView mav = new ModelAndView("shop/product/detail");
+		mav.addObject("topList", topList);
+		mav.addObject("product", product);
+		
+		return mav;
+	}
 }

@@ -22,7 +22,8 @@ import com.koreait.fashionshop.model.product.repository.PsizeDAO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
-	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+	private static final Logger logger=LoggerFactory.getLogger(ProductServiceImpl.class);
+	
 	@Autowired
 	private ProductDAO productDAO;
 	
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private ColorDAO colorDAO;
-
+	
 	@Override
 	public List selectAll() {
 		return productDAO.selectAll();
@@ -42,15 +43,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List selectById(int subcategory_id) {
-		return null;
+		return productDAO.selectById(subcategory_id);
 	}
 
 	@Override
 	public Product select(int product_id) {
-		return null;
+		return productDAO.select(product_id);
 	}
 
-	//Product의 filename과 Image의 filename은 어차피 각자의 pk를 통해 출력할 수 있으므로 확장자만 저장하자!
 	@Override
 	public void regist(FileManager fileManager, Product product) throws ProductRegistException{
 		
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		//색상 
 		for(Color color : product.getColor()){
-			//logger.debug("넘겨받은 색상은 "+color.getPicker());
+			logger.debug("넘겨받은 색상은 "+color.getPicker());
 			color.setProduct_id(product.getProduct_id());
 			colorDAO.insert(color);
 		}
@@ -101,10 +101,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void update(Product product) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void delete(int product_id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

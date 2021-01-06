@@ -21,30 +21,31 @@ public class MybatisProductDAO implements ProductDAO{
 
 	@Override
 	public List selectById(int subcategory_id) {
-		return null;
+		return sqlSessionTemplate.selectList("Product.selectBySubCategoryId", subcategory_id);
 	}
 
 	@Override
 	public Product select(int product_id) {
-		return null;
+		return sqlSessionTemplate.selectOne("Product.select", product_id);
 	}
 
 	@Override
 	public void insert(Product product) throws ProductRegistException{
 		int result = sqlSessionTemplate.insert("Product.insert", product);
-		if(result == 0) {
-			throw new ProductRegistException("상품 테이블에 입력 실패!");
+		if(result==0) {
+			throw new ProductRegistException("상품테이블에 입력실패");
 		}
 	}
 
 	@Override
 	public void update(Product product) throws ProductRegistException{
+
 		
 	}
 
 	@Override
-	public void delete(int product_id) throws ProductRegistException{
+	public void delete(int product_id)  throws ProductRegistException{
 		
 	}
-
+	
 }
