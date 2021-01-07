@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.koreait.fashionshop.exception.MemberNotFoundException;
 import com.koreait.fashionshop.exception.MemberRegistException;
 import com.koreait.fashionshop.model.domain.Member;
 
@@ -20,8 +21,12 @@ public class MybatisMemberDAO implements MemberDAO{
 	}
 
 	@Override
-	public Member select(int member_id) {
-		return null;
+	public Member select(Member member) throws MemberNotFoundException{
+		Member obj = sqlSessionTemplate.selectOne("Member.select", member);
+		if(obj == null) {
+			throw new MemberNotFoundException("ID 또는 Password를 다시 확인해주세요!");
+		}
+		return obj;
 	}
 
 	@Override

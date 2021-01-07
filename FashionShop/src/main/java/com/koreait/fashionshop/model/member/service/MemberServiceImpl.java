@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.koreait.fashionshop.common.MailSender;
 import com.koreait.fashionshop.common.SecureManager;
 import com.koreait.fashionshop.exception.MailSendException;
+import com.koreait.fashionshop.exception.MemberNotFoundException;
 import com.koreait.fashionshop.exception.MemberRegistException;
 import com.koreait.fashionshop.model.domain.Member;
 import com.koreait.fashionshop.model.member.repository.MemberDAO;
@@ -32,8 +33,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member select(int member_id) {
-		return null;
+	public Member select(Member member) throws MemberNotFoundException{
+		member.setPassword(secureManager.getSecureData(member.getPassword()));
+		return memberDAO.select(member);
 	}
 
 	@Override
