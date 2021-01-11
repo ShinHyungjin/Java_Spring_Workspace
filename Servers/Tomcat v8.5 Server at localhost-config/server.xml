@@ -108,7 +108,7 @@
 				<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
 				
-			<Context docBase="FashionShop" path="/" reloadable="true" source="org.eclipse.jst.jee.server:FashionShop"/><Context docBase="Urs" path="/Urs" reloadable="true" source="org.eclipse.jst.jee.server:Urs"/></Host>
+			<Context docBase="FashionShop" path="/" reloadable="true" source="org.eclipse.jst.jee.server:FashionShop"/></Host>
 		</Engine>
 	</Service>
 </Server>

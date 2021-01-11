@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@page import="com.koreait.fashionshop.model.domain.Image"%>
 <%@page import="com.koreait.fashionshop.model.domain.Psize"%>
-<%@page import="com.koreait.fashionshop.common.Formatter"%>
+<%@page import="com.koreait.fashionshop.model.common.Formatter"%>
 <%@page import="com.koreait.fashionshop.model.domain.Product"%>
 <%
 	Product product = (Product)request.getAttribute("product");

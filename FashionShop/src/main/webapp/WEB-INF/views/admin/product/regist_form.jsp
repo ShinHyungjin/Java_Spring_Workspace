@@ -170,7 +170,7 @@ function getSubList(obj){
 		url:"/admin/product/sublist", 
 		type:"get",
 		data:{
-			topcategory_id:$(obj).val()			
+			topcategory_id:$(obj).val()
 		},
 		success:function(result){
 			//alert("서버로 부터 받은 결과는 "+result);

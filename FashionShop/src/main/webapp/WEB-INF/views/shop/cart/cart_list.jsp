@@ -1,4 +1,4 @@
-<%@page import="com.koreait.fashionshop.common.Formatter"%>
+<%@page import="com.koreait.fashionshop.model.common.Formatter"%>
 <%@page import="com.koreait.fashionshop.model.domain.Cart"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%
@@ -24,15 +24,19 @@
 	}
 	
 	function editCart(){
-		if(confirm("주문수량을 변경 하시겠습니까?")){
+		if(confirm("주문 수량을 변경하시겠어요?")){
 			$("#cart-form").attr({
 				action:"/shop/cart/edit",
 				method:"post"
 			});
 			$("#cart-form").submit();
 		}	
+		
 	}
 	
+	function checkoutForm(){
+		location.href="/shop/payment/form";	
+	}
 	</script>
 </head>
 
@@ -43,7 +47,6 @@
         <!-- ****** Cart Area Start ****** -->
         <div class="cart_area section_padding_100 clearfix">
             <div class="container">
-            
             	<form id="cart-form">
                 <div class="row">
                     <div class="col-12">
@@ -146,7 +149,7 @@
                                 <li><span>Shipping</span> <span>Free</span></li>
                                 <li><span><strong>Total</strong></span> <span><strong><%=Formatter.getCurrency(sum) %></strong></span></li>
                             </ul>
-                            <a href="checkout.html" class="btn karl-checkout-btn">Proceed to checkout</a>
+                            <a href="javascript:checkoutForm()" class="btn karl-checkout-btn">Proceed to checkout</a>
                         </div>
                     </div>
                 </div>

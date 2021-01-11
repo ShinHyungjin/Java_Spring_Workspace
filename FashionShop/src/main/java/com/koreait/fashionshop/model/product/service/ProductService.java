@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.koreait.fashionshop.common.FileManager;
+import com.koreait.fashionshop.model.common.FileManager;
 import com.koreait.fashionshop.model.domain.Product;
 
 @Service
