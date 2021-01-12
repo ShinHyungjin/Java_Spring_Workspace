@@ -17,7 +17,7 @@ public class GlobalDataAspect {
 	
 	public Object getGlobalData(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object result = null;
-		HttpServletRequest request;
+		HttpServletRequest request = null;
 		
 		for(Object arg : joinPoint.getArgs()) {
 			if(arg instanceof HttpServletRequest) {
@@ -25,15 +25,20 @@ public class GlobalDataAspect {
 			}
 		}
 		
-		List topList =  topCategoryService.selectAll();
-		Object returnObj = joinPoint.proceed();
-		ModelAndView mav = null;
-		if(returnObj instanceof ModelAndView) {
-			mav = (ModelAndView)returnObj;
-			mav.addObject("topList", topList);
-			result = mav;
-		}
+		String uri = request.getRequestURI();
 		
+		if(uri.equals("/shop/member/login") || uri.equals("/shop/product/regist") || uri.equals("/shop/member/regist")  || uri.equals("/admin")) {
+			result = joinPoint.proceed();
+		}else {
+			List topList =  topCategoryService.selectAll();
+			Object returnObj = joinPoint.proceed();
+			ModelAndView mav = null;
+			if(returnObj instanceof ModelAndView) {
+				mav = (ModelAndView)returnObj;
+				mav.addObject("topList", topList);
+				result = mav;
+			}
+		}
 		return result;
 	}
 }
