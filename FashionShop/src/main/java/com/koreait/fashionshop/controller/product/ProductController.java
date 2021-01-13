@@ -1,5 +1,6 @@
 package com.koreait.fashionshop.controller.product;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,14 +11,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.koreait.fashionshop.exception.ProductRegistException;
+import com.koreait.fashionshop.exception.UploadFailException;
 import com.koreait.fashionshop.model.common.FileManager;
+import com.koreait.fashionshop.model.common.MessageData;
 import com.koreait.fashionshop.model.domain.Product;
 import com.koreait.fashionshop.model.domain.Psize;
 import com.koreait.fashionshop.model.domain.SubCategory;
@@ -75,7 +81,7 @@ public class ProductController implements ServletContextAware{
 	//스프링에서는 java객체와 Json간 변환(converting)을 자동으로 처리해주는 라이브러리를 지원한다
 	@RequestMapping(value="/admin/product/sublist", method=RequestMethod.GET)
 	@ResponseBody
-	public List getSubList(int topcategory_id) {
+	public List getSubList(HttpServletRequest request, int topcategory_id) {
 		List<SubCategory> subList = subCategoryService.selectAllById(topcategory_id);
 		return subList;
 	}
@@ -110,7 +116,29 @@ public class ProductController implements ServletContextAware{
 		return sb.toString();
 	}
 	 */
-
+	
+	@GetMapping("/admin/product/excel/registform")
+	public String getExcelForm(HttpServletRequest request) {
+		return "admin/product/excel_form";
+	}
+	
+	//엑셀에 의한 상품등록 요청 처리 
+	@RequestMapping(value="/admin/product/excel/regist", method = RequestMethod.POST, produces="text/html;charset=utf8")
+	@ResponseBody // 비동기 이므로 
+	public String registByExcel(HttpServletRequest request, MultipartFile dump) {
+		
+		String path = fileManager.getSaveBasicDir()+File.separator+dump.getOriginalFilename(); //저장할 파일명
+		fileManager.saveFile(path, dump);
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("\"result\":1,");
+		sb.append("\"msg\":\"파일등록 성공\"");
+		sb.append("}");
+		
+		return sb.toString();
+	}
+	
+	
 	
 	//상품목록
 	@RequestMapping(value="/admin/product/list", method=RequestMethod.GET )
@@ -134,7 +162,7 @@ public class ProductController implements ServletContextAware{
 	//상품 등록 
 	@RequestMapping(value="/admin/product/regist", method=RequestMethod.POST, produces ="text/html;charset=utf8")
 	@ResponseBody
-	public String registProduct(Product product, String[] test) {
+	public String registProduct(HttpServletRequest request, Product product, String[] test) {
 		logger.debug("하위카테고리 "+product.getSubCategory().getSubcategory_id());
 		logger.debug("상품명 "+product.getProduct_name());
 		logger.debug("가격 "+product.getPrice());
@@ -189,7 +217,6 @@ public class ProductController implements ServletContextAware{
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("productList", productList);
-		
 		mav.setViewName("shop/product/list");
 		return mav;
 	}
@@ -198,10 +225,22 @@ public class ProductController implements ServletContextAware{
 	@RequestMapping(value="/shop/product/detail", method=RequestMethod.GET)
 	public ModelAndView getShopProductDetail(HttpServletRequest request, int product_id) {
 		Product product = productService.select(product_id);//상품 1건 가져오기
-		
 		ModelAndView mav = new ModelAndView("shop/product/detail");
 		mav.addObject("product", product);
 		
 		return mav;
 	}
+	
+	//예외처리 
+		//위의 메서드 중에서 하나라도 예외가 발생하면, 아래의 핸들러가 동작
+		@ExceptionHandler(UploadFailException.class)
+		@ResponseBody
+		public String handleException(UploadFailException e) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("{");
+			sb.append("\"result\":0");
+			sb.append("\"msg\":\""+e.getMessage()+"\"");
+			sb.append("}");
+			return sb.toString();
+		}
 }
