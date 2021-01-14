@@ -79,5 +79,10 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>				
 	</aop:config>	
 	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
 	
 </beans>

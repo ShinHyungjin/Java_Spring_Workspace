@@ -61,7 +61,7 @@ function regist(){
 	<!-- 파일 최대 4개까지 지원 -->
 	<p>엑셀파일 선택: <input type="file"  name="dump"></p>
     <input type="button" value="데이터 등록" onClick="regist()">
-    <input type="button" value="상품목록" onClick="location.href='/client/notice/list'">
+    <input type="button" value="상품목록" onClick="location.href='/admin/product/list'">
   </form>
 </div>
 

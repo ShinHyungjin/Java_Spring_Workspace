@@ -17,7 +17,7 @@ $(function(){
 	});
 	
 	$("#bt_excel").click(function(){
-		location.href="/admin/product/excel/registform"; //대량 등록폼 요청
+		location.href="/admin/product/excel"; //대량 등록폼 요청
 	});
 });
 </script>
