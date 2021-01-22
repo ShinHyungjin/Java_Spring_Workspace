@@ -5,6 +5,8 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.koreait.restproject.exception.MemberUpdateException;
 import com.koreait.restproject.rest.model.domain.Member;
 
 @Repository
@@ -18,10 +20,10 @@ public class MybatisMemberDAO implements MemberDAO{
 	}
 
 	@Override
-	public void insert(Member member) throws RuntimeException{
+	public void insert(Member member) throws MemberUpdateException{
 		int result = sqlSessionTemplate.insert("Member.insert", member);
 		if(result == 0) {
-			throw new RuntimeException("등록 실패");
+			throw new MemberUpdateException("등록 실패");
 		}
 	}
 

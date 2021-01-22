@@ -1,6 +1,9 @@
 package com.koreait.restproject.rest.controller.member;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,10 +21,13 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@GetMapping("/member")
-	public String getList() {
+	public ResponseEntity<List<Member>> getList() {
 		log.debug("리스트 요청");
+		List<Member> memberList = memberService.selectAll();
 		
-		return "ha ha ha";
+		ResponseEntity entity = ResponseEntity.ok().body(memberList);
+		
+		return entity;
 	}
 	@PostMapping("/member")
 	public String regist(@RequestBody Member member) {
