@@ -6,9 +6,9 @@ public class MemberUpdateException extends RuntimeException{
 		super(msg);
 	}
 	public MemberUpdateException(String msg, Throwable e) {
-		super(msg, e);
+		super(msg,e);
 	}
 	public MemberUpdateException(Throwable e) {
 		super(e);
-	}
+	}	
 }
