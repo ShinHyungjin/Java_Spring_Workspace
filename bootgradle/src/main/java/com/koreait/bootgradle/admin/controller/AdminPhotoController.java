@@ -28,6 +28,7 @@ public class AdminPhotoController {
 	@PostMapping("/admin/photo")
 	public String regist(Photo photo) {
 		log.debug("넘겨받은 제목은 "+photo.getTitle());
+		log.debug("넘겨받은 파일명은 "+photo.getMyFile().getOriginalFilename());
 		
 		photoService.regist(photo);
 		

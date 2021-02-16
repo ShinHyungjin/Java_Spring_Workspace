@@ -8,15 +8,42 @@
 <th:block th:replace="fragment/config :: configFragment"/>
 <script>
 $(function(){
-	alert("로드했어!");
+	$("button").click(function() {
+		upload();
+	});
 });
+
+function upload() {
+	$("form").attr({
+		action:"/admin/photo",
+		enctype:"multipart/form-data",
+		method:"POST"
+	});
+	
+	$("form").submit();
+	
+	/*
+	var formData = new FormData($("form")[0]);
+	$.ajax({
+		url:"/admin/photo",
+		type:"POST",
+		data:{},
+		success:function(responseData) {
+			
+		},error : function(xhr, result, error) {
+			
+		}
+		
+	});
+	*/
+}
 </script>
 </head>
 <body>
 	
 	<form>
-		<input type="text" placeholder="제목입력...">
-		<input type="file">
+		<input type="text" name="title" placeholder="제목입력...">
+		<input type="file" name="myFile">
 		<button type="button">업로드</button>
 	</form>
 	
