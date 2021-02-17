@@ -14,9 +14,11 @@ public class MybatisPhotoDAO implements PhotoDAO{
 	
 	//mybatis 설정..
 	public void insert(Photo photo) throws PhotoUpdateException{
-		int result = sqlSessionTemplate.insert("Photo.insert", photo);
+		int result =sqlSessionTemplate.insert("Photo.insert", photo);
+		
 		if(result == 0) {
-			throw new PhotoUpdateException("파일 Insert 실패!");
+			throw new PhotoUpdateException("파일 insert 실패");
 		}
 	}
+	
 }

@@ -1,35 +1,34 @@
 <!DOCTYPE html>
-<html 
+<html   
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	>
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 3 | Dashboard</title>
-  
-  <!-- CSS -->
+  <!-- 이 자리에 설정 코드가 와야함.. -->
   <th:block th:replace="fragment/config :: configFragment"/>
-  <!-- CSS End -->
   
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Top Navi -->
+  <!-- Navbar -->
   <th:block th:replace="fragment/top_navi :: topNaviFragment"/>
-  <!-- Top Navi End -->
+  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside  class="main-sidebar sidebar-dark-primary elevation-4">
-  	<!-- AdminLTE 3 Logo Navi -->
-  	<th:block th:replace="fragment/logo :: logoNaviFragment"/>
-  	<div class="sidebar">
-  		<!-- Alexander Pierce User Navi -->
-  		 <th:block th:replace="fragment/user :: userNaviFragment"/>
-  		 <!-- Side Navi -->
-  		 <th:block th:replace="fragment/side_navi :: sideNaviFragment"/>  		 
-  	</div>
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    	<!-- Brand Logo -->
+		<th:block th:replace="fragment/logo :: logoFragment"/>
+			
+		<!-- Sidebar -->
+		<th:block th:replace="fragment/user :: userFragment"/>
+		
+		<!-- Sidebar Menu -->
+		<th:block th:replace="fragment/side_navi :: sideNaviFragment"/>      
+    </div>
+    <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->

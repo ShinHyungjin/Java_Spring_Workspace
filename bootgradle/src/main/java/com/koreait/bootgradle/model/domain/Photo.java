@@ -9,5 +9,6 @@ public class Photo {
 	private int photo_id;
 	private String title;
 	private String filename;
-	private MultipartFile myFile;
+	private MultipartFile myFile; //이 안으로 바이너리 파일이 들어옴..
+	 
 }
